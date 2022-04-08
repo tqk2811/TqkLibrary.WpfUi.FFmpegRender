@@ -24,7 +24,7 @@ namespace TqkLibrary.FFmpegRender
 
 
 
-        public async Task<int> StartRun(RenderData renderData, CancellationToken cancellationToken = default)
+        public async Task<int> StartRun(RenderData renderData)
         {
             PipeSecurity _pipeSecurity = new PipeSecurity();
             PipeAccessRule psEveryone = new PipeAccessRule("Everyone", PipeAccessRights.FullControl,
@@ -59,26 +59,20 @@ namespace TqkLibrary.FFmpegRender
             using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource(10000);
             try
             {
-                using (var register = cancellationToken.Register(() => cancellationTokenSource.Cancel()))
-                {
-                    await namedPipeServerStream.WaitForConnectionAsync(cancellationTokenSource.Token);
-                }
-                
-                using StreamWriter sw = new StreamWriter(namedPipeServerStream);
-                await sw.WriteLineAsync(json);
-                //namedPipeServerStream.WaitForPipeDrain();
-
                 var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, args) => tcs.TrySetResult(null);
-                using (var register = cancellationToken.Register(() => tcs.TrySetCanceled()))
-                {
-                    await tcs.Task.ConfigureAwait(false);
-                }
+                
+                await namedPipeServerStream.WaitForConnectionAsync(cancellationTokenSource.Token);
+                using StreamWriter sw = new StreamWriter(namedPipeServerStream);
+                await sw.WriteLineAsync(json);
+                namedPipeServerStream.WaitForPipeDrain();
+                
+                await tcs.Task.ConfigureAwait(false);
             }
             catch
             {
-                
+
             }
             finally
             {
