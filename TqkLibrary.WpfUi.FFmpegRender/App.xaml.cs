@@ -5,9 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using TqkLibrary.FFmpegRender.UI;
+using TqkLibrary.WpfUi.FFmpegRender.UI;
 
-namespace TqkLibrary.FFmpegRender
+namespace TqkLibrary.WpfUi.FFmpegRender
 {
     /// <summary>
     /// Interaction logic for App.xaml

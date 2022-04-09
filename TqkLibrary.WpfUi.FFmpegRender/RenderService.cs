@@ -8,29 +8,46 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Reflection;
 
-namespace TqkLibrary.FFmpegRender
+namespace TqkLibrary.WpfUi.FFmpegRender
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RenderService
     {
         static readonly FileInfo fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
         readonly string _RenderPath = Path.Combine(Directory.GetCurrentDirectory(), fileInfo.Name);
-
+        /// <summary>
+        /// 
+        /// </summary>
         public event DataReceivedEventHandler OutputDataReceived;
+        /// <summary>
+        /// 
+        /// </summary>
         public event DataReceivedEventHandler ErrorDataReceived;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="renderPath"></param>
         public RenderService(string renderPath = null)
         {
             if (!string.IsNullOrEmpty(renderPath)) _RenderPath = renderPath;
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="renderData"></param>
+        /// <returns></returns>
         public async Task<int> StartRun(RenderData renderData)
         {
+#if NET462
             PipeSecurity _pipeSecurity = new PipeSecurity();
             PipeAccessRule psEveryone = new PipeAccessRule("Everyone", PipeAccessRights.FullControl,
                 System.Security.AccessControl.AccessControlType.Allow);
             _pipeSecurity.AddAccessRule(psEveryone);
-
+#endif
             string json = JsonConvert.SerializeObject(renderData);
             string PipeName = "Render_" + Guid.NewGuid().ToString();
             using NamedPipeServerStream namedPipeServerStream = new NamedPipeServerStream(
@@ -40,8 +57,11 @@ namespace TqkLibrary.FFmpegRender
                   PipeTransmissionMode.Byte,
                   PipeOptions.None,
                   1024 * 1024,
-                  1024 * 1024,
-                  _pipeSecurity);
+                  1024 * 1024
+                  #if NET462
+                  ,_pipeSecurity
+                  #endif
+                  );
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo(_RenderPath);
             processStartInfo.Arguments = PipeName;

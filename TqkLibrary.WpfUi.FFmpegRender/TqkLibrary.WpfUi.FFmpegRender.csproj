@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFrameworks>net462</TargetFrameworks>
+		<TargetFrameworks>net462;net5.0-windows7.0;net6.0-windows7.0</TargetFrameworks>
 		<LangVersion>8.0</LangVersion>
 		<UseWPF>true</UseWPF>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -14,8 +14,18 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="FFmpegArgs.Executes" Version="1.4.0" />
+		<PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+		<PackageReference Include="Microsoft-WindowsAPICodePack-Core" Version="1.1.4" />
+	</ItemGroup>
+	
+	<!--<ItemGroup Condition="'$(TargetFramework)' == 'net462'">
 		<PackageReference Include="WindowsAPICodePack-Core" Version="1.1.2" />
 		<PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
-		<PackageReference Include="FFmpegArgs.Executes" Version="1.4.0" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' != 'net462'">
+		<PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+		<PackageReference Include="Microsoft-WindowsAPICodePack-Core" Version="1.1.4" />
+	</ItemGroup>-->
 </Project>

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TqkLibrary.FFmpegRender
+namespace TqkLibrary.WpfUi.FFmpegRender
 {
     public class RenderData
     {

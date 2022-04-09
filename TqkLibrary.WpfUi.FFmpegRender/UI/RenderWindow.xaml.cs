@@ -18,9 +18,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TqkLibrary.FFmpegRender.UI.ViewModels;
+using TqkLibrary.WpfUi.FFmpegRender.UI.ViewModels;
 using System.IO.Pipes;
-namespace TqkLibrary.FFmpegRender.UI
+namespace TqkLibrary.WpfUi.FFmpegRender.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -133,7 +133,7 @@ namespace TqkLibrary.FFmpegRender.UI
                             sw.WriteLine();
                             sw.WriteLine();
                         }
-
+                        
                         TaskbarManager.Instance.SetProgressValue(0, 1);
                         renderWVM.ProgressValue = 0;
                         renderWVM.ProgressMax = renderData.RenderItems[arg_index].Time.TotalMilliseconds;
