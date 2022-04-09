@@ -37,7 +37,7 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
         int arg_index = 0;
 
 
-        public RenderWindow(string[] Args)
+        internal RenderWindow(string[] Args)
         {
             this.DataContext = this;
             if (Args == null || Args.Length != 1)
@@ -51,21 +51,34 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
                 this.renderWVM = this.DataContext as RenderWVM;
             }
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
+#if DEBUG
+            MessageBox.Show("Wait attach");
+#endif
             try
             {
                 using (NamedPipeClientStream NamedPipeClientStream = new NamedPipeClientStream(".", PipeName, PipeDirection.InOut))
                 {
-                    NamedPipeClientStream.Connect();
-                    NamedPipeClientStream.ReadMode = PipeTransmissionMode.Byte;
+                    await NamedPipeClientStream.ConnectAsync(5000);
                     if (NamedPipeClientStream.IsConnected)
                     {
-                        using (StreamReader sr = new StreamReader(NamedPipeClientStream))
+                        NamedPipeClientStream.ReadMode = PipeTransmissionMode.Byte;
+                        if (NamedPipeClientStream.IsConnected)
                         {
-                            string json = sr.ReadToEnd();
-                            this.renderData = JsonConvert.DeserializeObject<RenderData>(json);
+                            using (StreamReader sr = new StreamReader(NamedPipeClientStream))
+                            {
+                                string json = await sr.ReadToEndAsync();
+                                this.renderData = JsonConvert.DeserializeObject<RenderData>(json);
+                            }
                         }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Connection timeout", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        AllowClose = true;
+                        this.Close();
+                        return;
                     }
                 }
             }
@@ -133,13 +146,14 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
                             sw.WriteLine();
                             sw.WriteLine();
                         }
-                        
+
                         TaskbarManager.Instance.SetProgressValue(0, 1);
                         renderWVM.ProgressValue = 0;
                         renderWVM.ProgressMax = renderData.RenderItems[arg_index].Time.TotalMilliseconds;
 
                         FFmpegRenderConfig config = new FFmpegRenderConfig();
-                        config.WithFFmpegBinaryPath(renderData.FFmpegPath);
+                        if (!string.IsNullOrEmpty(renderData.FFmpegPath))
+                            config.WithFFmpegBinaryPath(renderData.FFmpegPath);
                         if (!string.IsNullOrEmpty(renderData.RenderItems[arg_index].WorkingDirectory))
                             config.WithWorkingDirectory(renderData.RenderItems[arg_index].WorkingDirectory);
 

@@ -82,12 +82,17 @@ namespace TqkLibrary.WpfUi.FFmpegRender
                 var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, args) => tcs.TrySetResult(null);
-
+#if DEBUG
+                await namedPipeServerStream.WaitForConnectionAsync();
+#else
                 await namedPipeServerStream.WaitForConnectionAsync(cancellationTokenSource.Token);
-                using StreamWriter sw = new StreamWriter(namedPipeServerStream);
-                await sw.WriteLineAsync(json);
-                namedPipeServerStream.WaitForPipeDrain();
-
+#endif
+                using (StreamWriter sw = new StreamWriter(namedPipeServerStream))
+                {
+                    await sw.WriteLineAsync(json);
+                    namedPipeServerStream.WaitForPipeDrain();
+                }//close stream
+                
                 await tcs.Task.ConfigureAwait(false);
             }
             catch
