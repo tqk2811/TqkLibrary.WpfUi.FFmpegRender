@@ -16,13 +16,13 @@
 				<dependency id="Microsoft-WindowsAPICodePack-Shell" version="1.1.4" />
 				<dependency id="FFmpegArgs.Executes" version="1.4.0" />
 			</group>
-			<group targetFramework="net5.0-windows">
+			<group targetFramework="net5.0-windows7.0">
 				<dependency id="Newtonsoft.Json" version="13.0.1" />
 				<dependency id="Microsoft-WindowsAPICodePack-Core" version="1.1.4" />
 				<dependency id="Microsoft-WindowsAPICodePack-Shell" version="1.1.4" />
 				<dependency id="FFmpegArgs.Executes" version="1.4.0" />
 			</group>
-			<group targetFramework="net6.0-windows">
+			<group targetFramework="net6.0-windows7.0">
 				<dependency id="Newtonsoft.Json" version="13.0.1" />
 				<dependency id="Microsoft-WindowsAPICodePack-Core" version="1.1.4" />
 				<dependency id="Microsoft-WindowsAPICodePack-Shell" version="1.1.4" />
