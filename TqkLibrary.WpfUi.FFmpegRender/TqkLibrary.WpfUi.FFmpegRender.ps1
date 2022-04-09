@@ -3,7 +3,7 @@ Set-Location $PSScriptRoot
 $projectName= $dirInfo.Name;
 $key=$env:nugetKey
 $buildDay=[DateTime]::Now.ToString("yyyyMMdd")
-$buildIndex="00"
+$buildIndex="03"
 $p="buildDay=$($buildDay);buildIndex=$($buildIndex)".Trim()
 
 function RunCommand

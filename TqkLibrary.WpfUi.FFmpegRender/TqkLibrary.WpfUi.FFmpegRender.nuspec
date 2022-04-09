@@ -29,10 +29,21 @@
 				<dependency id="FFmpegArgs.Executes" version="1.4.0" />
 			</group>
 		</dependencies>
+		<contentFiles>
+			<files include="**/*.exe" copyToOutput="true" buildAction="None" flatten="true"/>
+			<!--<files include="lib\**\$id$.pdb" copyToOutput="true" buildAction="Content"/>
+			<files include="lib\**\$id$.xml" copyToOutput="true" buildAction="Content"/>-->
+		</contentFiles>
 	</metadata>
 	<files>
-		<file src="bin\Release\**\$id$.exe" target="lib\" />
+		<file src="bin\Release\**\$id$.exe" target="contentFiles\any\any" />
+		<file src="bin\Release\**\$id$.dll" target="lib\" />
 		<file src="bin\Release\**\$id$.pdb" target="lib\" />
 		<file src="bin\Release\**\$id$.xml" target="lib\" />
+		
+		<!--<file src="bin\Release\**\$id$.Service.dll" target="lib\" />
+		<file src="bin\Release\**\$id$.Service.pdb" target="lib\" />
+		<file src="bin\Release\**\$id$.Service.xml" target="lib\" />-->
 	</files>
+
 </package>

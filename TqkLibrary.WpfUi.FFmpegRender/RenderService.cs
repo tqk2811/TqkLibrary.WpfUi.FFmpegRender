@@ -16,7 +16,7 @@ namespace TqkLibrary.WpfUi.FFmpegRender
     public class RenderService
     {
         static readonly FileInfo fileInfo = new FileInfo(Assembly.GetExecutingAssembly().Location);
-        readonly string _RenderPath = Path.Combine(Directory.GetCurrentDirectory(), fileInfo.Name);
+        readonly string _RenderPath = Path.Combine(Directory.GetCurrentDirectory(), "TqkLibrary.WpfUi.FFmpegRender.exe");
         /// <summary>
         /// 
         /// </summary>
@@ -58,9 +58,9 @@ namespace TqkLibrary.WpfUi.FFmpegRender
                   PipeOptions.None,
                   1024 * 1024,
                   1024 * 1024
-                  #if NET462
-                  ,_pipeSecurity
-                  #endif
+#if NET462
+                  , _pipeSecurity
+#endif
                   );
 
             ProcessStartInfo processStartInfo = new ProcessStartInfo(_RenderPath);
@@ -82,12 +82,12 @@ namespace TqkLibrary.WpfUi.FFmpegRender
                 var tcs = new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
                 process.EnableRaisingEvents = true;
                 process.Exited += (sender, args) => tcs.TrySetResult(null);
-                
+
                 await namedPipeServerStream.WaitForConnectionAsync(cancellationTokenSource.Token);
                 using StreamWriter sw = new StreamWriter(namedPipeServerStream);
                 await sw.WriteLineAsync(json);
                 namedPipeServerStream.WaitForPipeDrain();
-                
+
                 await tcs.Task.ConfigureAwait(false);
             }
             catch
