@@ -3,7 +3,7 @@ Set-Location $PSScriptRoot
 $projectName= $dirInfo.Name;
 $key=$env:nugetKey
 $buildDay=[DateTime]::Now.ToString("yyyyMMdd")
-$buildIndex="05"
+$buildIndex="00"
 $p="buildDay=$($buildDay);buildIndex=$($buildIndex)".Trim()
 $build="Release"
 
@@ -33,7 +33,7 @@ function NugetPack
 
         $result = RunCommand "Remove-Item -Recurse -Force .\bin\$($build)\**" `
             "dotnet build .\$($args[$i]).csproj -c $($build)" `
-            "nuget pack .\$($args[$i]).nuspec -OutputDirectory .\bin\$($build) -p 'id=$($args[$i]);$($p)'"
+            "nuget pack .\$($args[$i]).nuspec -Symbols -OutputDirectory .\bin\$($build) -p 'id=$($args[$i]);$($p)'"
 
         if($result) {
             Write-Host "$($args[$i]) success"
@@ -53,7 +53,7 @@ function NugetPush
     {
         Write-Host "NugetPush $($args[$i])"
 
-        iex "dotnet nuget push .\bin\$($build)\*.nupkg --api-key $($key) --source https://api.nuget.org/v3/index.json"
+        iex "nuget push .\bin\$($build)\ -ApiKey $($key) -Source https://api.nuget.org/v3/index.json -SymbolSource https://nuget.smbsrc.net"
     }
 }
 
