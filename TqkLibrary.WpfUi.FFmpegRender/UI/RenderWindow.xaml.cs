@@ -86,7 +86,7 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
             {
                 MessageBox.Show(ex.Message + "\r\n" + ex.StackTrace, ex.GetType().FullName);
                 AllowClose = true;
-                Application.Current.Shutdown();
+                Application.Current.Shutdown(-1);
                 return;
             }
             if (renderData?.RenderItems == null && renderData.RenderItems.Count == 0)
@@ -129,6 +129,7 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
 
         async void ProcessArg()
         {
+            int exitCode = 0;
             try
             {
                 for (arg_index = 0; arg_index < renderData.RenderItems.Count; arg_index++)
@@ -164,6 +165,7 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
 
                         foreach (var line in result.ErrorDatas) sw.WriteLine(line);
                         cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                        exitCode = result.ExitCode;
                         result.EnsureSuccess();
                     }
                     catch (OperationCanceledException)
@@ -182,7 +184,6 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
                         sw?.WriteLine(error + ",  Args: " + string.Join(";", renderData.RenderItems) + ", StackTrace: " + ex.StackTrace);
                         sw?.WriteLine();
                         Console.Error.WriteLine(error);
-                        //MessageBox.Show(error, "Lỗi", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                         return;
                     }
                     finally
@@ -194,7 +195,10 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
             finally
             {
                 AllowClose = true;
-                this.Close();
+                if (exitCode == 0)
+                    this.Close();
+                else
+                    Application.Current.Shutdown(exitCode);
             }
         }
 
