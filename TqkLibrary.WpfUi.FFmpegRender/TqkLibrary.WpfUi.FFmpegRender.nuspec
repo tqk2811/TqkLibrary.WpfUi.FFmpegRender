@@ -28,23 +28,19 @@
 				<dependency id="Microsoft-WindowsAPICodePack-Shell" version="1.1.4" />
 				<dependency id="FFmpegArgs.Executes" version="1.5.0" />
 			</group>
+			<group targetFramework="net7.0-windows7.0">
+				<dependency id="Newtonsoft.Json" version="13.0.1" />
+				<dependency id="Microsoft-WindowsAPICodePack-Core" version="1.1.4" />
+				<dependency id="Microsoft-WindowsAPICodePack-Shell" version="1.1.4" />
+				<dependency id="FFmpegArgs.Executes" version="1.5.0" />
+			</group>
 		</dependencies>
-		<contentFiles>
-			<files include="**/*.exe" copyToOutput="true" buildAction="None" flatten="true"/>
-			<!--<files include="lib\**\$id$.pdb" copyToOutput="true" buildAction="Content"/>
-			<files include="lib\**\$id$.xml" copyToOutput="true" buildAction="Content"/>-->
-		</contentFiles>
 	</metadata>
 	<files>
-		<file src="bin\Release\**\$id$.exe" target="contentFiles\any\" />
 		<file src="bin\Release\**\$id$.exe" target="lib\" />
 		<file src="bin\Release\**\$id$.dll" target="lib\" />
 		<file src="bin\Release\**\$id$.pdb" target="lib\" />
 		<file src="bin\Release\**\$id$.xml" target="lib\" />
-		
-		<!--<file src="bin\Release\**\$id$.Service.dll" target="lib\" />
-		<file src="bin\Release\**\$id$.Service.pdb" target="lib\" />
-		<file src="bin\Release\**\$id$.Service.xml" target="lib\" />-->
 	</files>
 
 </package>
