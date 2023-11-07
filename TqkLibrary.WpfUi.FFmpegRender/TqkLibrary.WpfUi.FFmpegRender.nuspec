@@ -45,10 +45,10 @@
 		<file src="bin\Release\**\$id$.dll" target="lib\"/>
 		
 		<file src="bin\Release\**\$id$.pdb" target="lib\" />
-		<file src="bin\Release\**\$id$.runtimeconfig.json" target="lib\" />
 		<file src="bin\Release\**\$id$.xml" target="lib\" />
 		<file src="**\*.cs" target="src\" exclude="obj\**\*.cs;bin\**\*.cs"/>
 
+		<file src="bin\Release\**\$id$.runtimeconfig.json" target="contentFiles\any\" />
 		<file src="bin\Release\**\$id$.exe" target="contentFiles\any\" exclude="bin\Release\net462\**"/>
 		<file src="TqkLibrary.WpfUi.FFmpegRender.props" target="build\TqkLibrary.WpfUi.FFmpegRender.props" />
 	</files>
