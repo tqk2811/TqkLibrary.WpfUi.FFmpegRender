@@ -35,13 +35,22 @@
 				<dependency id="FFmpegArgs.Executes" version="1.5.0" />
 			</group>
 		</dependencies>
+		<contentFiles>
+			<files include="**/*.*" copyToOutput="true" buildAction="None"/>
+		</contentFiles>
 	</metadata>
 	<files>
-		<file src="bin\Release\**\$id$.exe" target="lib\" />
-		<!--<file src="bin\Release\**\$id$.dll" target="lib\" />-->
+		<file src="bin\Release\net462\**\$id$.exe" target="lib\net462\"/>
+		
+		<file src="bin\Release\**\$id$.dll" target="lib\"/>
+		
 		<file src="bin\Release\**\$id$.pdb" target="lib\" />
+		<file src="bin\Release\**\$id$.runtimeconfig.json" target="lib\" />
 		<file src="bin\Release\**\$id$.xml" target="lib\" />
 		<file src="**\*.cs" target="src\" exclude="obj\**\*.cs;bin\**\*.cs"/>
+
+		<file src="bin\Release\**\$id$.exe" target="contentFiles\any\" exclude="bin\Release\net462\**"/>
+		<file src="TqkLibrary.WpfUi.FFmpegRender.props" target="build\TqkLibrary.WpfUi.FFmpegRender.props" />
 	</files>
 
 </package>
