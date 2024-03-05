@@ -174,6 +174,7 @@ namespace TqkLibrary.WpfUi.FFmpegRender.UI
                     }
                     catch (Exception ex)
                     {
+                        exitCode = 1;
                         if (ex is AggregateException ae) ex = ae.InnerException;
                         if (ex is OperationCanceledException) return;
                         string error = ex.GetType().FullName + "\r\nMessage: " + ex.Message;
